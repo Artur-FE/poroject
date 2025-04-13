@@ -1,17 +1,24 @@
-import { BrowserRouter } from 'react-router-dom'
-import GlobalStyles from "./styles/GlobalStyles"
 
 
-function App() {
 
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { UserProvider } from './context/UserContext';
+import LoginForm from './pages/components/LoginForm';
+
+import UserData from './components/UserData';
+
+const App: React.FC = () => {
   return (
-    //BrowserRouter - глобальная обёртка для всего приложения,
-    // которая позволяет использовать маршрутизацию
-    <BrowserRouter>
-      <GlobalStyles />
-      
-    </BrowserRouter>
-  )
-}
+    <Router>
+      <UserProvider>
+        <Routes>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/user-data" element={<UserData />} />
+        </Routes>
+      </UserProvider>
+    </Router>
+  );
+};
 
-export default App
+export default App;

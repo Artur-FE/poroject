@@ -1,0 +1,61 @@
+// import React, { createContext, useState, useContext, ReactNode } from 'react';
+// import { User } from '../pages/UserData/types/userData';
+
+// interface UserContextType {
+//   user: User | null;
+//   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+// }
+
+// const UserContext = createContext<UserContextType | undefined>(undefined);
+
+// interface UserProviderProps {
+//   children: ReactNode;
+// }
+
+// export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+//   const [user, setUser] = useState<User | null>(null);
+
+//   return (
+//     <UserContext.Provider value={{ user, setUser }}>
+//       {children}
+//     </UserContext.Provider>
+//   );
+// };
+
+// export const useUser = () => {
+//   const context = useContext(UserContext);
+//   if (!context) {
+//     throw new Error('useUser must be used within a UserProvider');
+//   }
+//   return context;
+// };
+
+import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { User } from '../pages/UserData/types';
+
+interface UserContextType {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
+
+const UserContext = createContext<UserContextType | undefined>(undefined);
+
+const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
+};
+
+export { UserProvider, useUser };
