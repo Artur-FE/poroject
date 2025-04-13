@@ -22,3 +22,7 @@ font-size: 28px;
 font-weight: bold;
 padding: 20px;
 `;
+
+export const ErrorTitle = styled.div`
+color: red;
+`

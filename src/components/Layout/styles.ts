@@ -13,7 +13,7 @@ export const Header = styled.header`
  justify-content: space-between;
  align-items: center;
  padding: 20px;
- background-color: #F5B0BC;
+ background-color: #dedede;
 `;
 
 export const LogoImage = styled.img`
@@ -45,15 +45,14 @@ export const Footer = styled.footer`
  align-items: center;
  gap: 30px;
  padding: 20px;
- background-color: #7d686b;
- color: white;
+ background-color: #dedede;
+ color: black;
 `;
 
 export const ButtonContainer = styled.div`
  width: 50px;
 `
 export const LogoText = styled.div`
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 12px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 `

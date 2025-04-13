@@ -29,7 +29,7 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 flex: 1;
-width: 300px;
+width: 350px;
 gap: 10px;
 `;
 

@@ -1,17 +1,20 @@
 import { useFormik } from "formik";
 import Input from "../../components/Input/Input";
-import { LoginFormContainer, LoginFormWrapper, Title } from "./styles";
+import {
+  ErrorTitle,
+  LoginFormContainer,
+  LoginFormWrapper,
+  Title,
+} from "./styles";
 import * as Yup from "yup";
 import Button from "../../components/Button/Button";
 import { LoginFormInterface } from "./types";
 import { useContext } from "react";
 import { UserContext } from "../../components/Layout/Layout";
-import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner/Spinner";
 
 function LoginForm() {
-
-    const {userData, getUser, isLoading} = useContext(UserContext);
+  const { getUser, isLoading, error } = useContext(UserContext);
 
   const schema = Yup.object().shape({
     login: Yup.string()
@@ -26,21 +29,14 @@ function LoginForm() {
         "Пароль должен содержать min 8 символов (заглавная буква, строчная, цифра, спецсимвол)"
       ),
   });
-
-  const navigate = useNavigate();
-
-
   const formik = useFormik({
     initialValues: {
-      login: '',
-      password: '',
+      login: "",
+      password: "",
     } as LoginFormInterface,
     validationSchema: schema,
     onSubmit: () => {
-        getUser();
-        
-       // navigate('/user')
-        
+      getUser();
     },
   });
 
@@ -49,6 +45,7 @@ function LoginForm() {
       <LoginFormWrapper onSubmit={formik.handleSubmit}>
         <Title>Login Form</Title>
         {isLoading && <Spinner />}
+        {error && <ErrorTitle>{error}</ErrorTitle>}
         <Input
           name="login"
           id="login_id"
@@ -67,7 +64,6 @@ function LoginForm() {
           error={formik.errors.password}
         />
         <Button name="Login" />
-    
       </LoginFormWrapper>
     </LoginFormContainer>
   );
