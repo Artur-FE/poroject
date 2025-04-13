@@ -14,82 +14,34 @@ import {
   LogoImage,
   ButtonContainer
 } from "./styles"
-import { LayoutProps, NavLinkObj, UserDataInterface, UserTextInterface } from "./types"
+import { JokeTextInterface, LayoutProps, NavLinkObj } from "./types"
 import { navLinksData } from "./data"
-import Logo from '../../../src/assets/avatar.jpg'
+import Logo from '../../assets/avatar.jpg'
 import Button from "../Button/Button"
 
 
-export const UserContext = createContext<UserTextInterface>({
-  userData: undefined,
+export const JokeContext = createContext<JokeTextInterface>({
+  joke: undefined,
   error: undefined,
   isLoading: false,
-  getUser: () => { }
+  getJoke: () => { }
 })
 
 function Layout({ children }: LayoutProps) {
-  const [userData, setUserData] = useState<UserDataInterface | undefined>({
-    email: '',
-    userName: '',
-    titleName: '',
-    firstName: '',
-    lastName: '',
-    gender: '',
-    picture: '',
-    country: '',
-    city: ''
-
-  });
+  const [joke, setJoke] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const USER_URL: string = 'https://randomuser.me/api';
+  const JOKE_URL: string = 'https://official-joke-api.appspot.com/random_joke';
 
-  const getUser = async () => {
+  const getJoke = async () => {
     setError(undefined)
     try {
       setIsLoading(true);
-      const response = await axios.get(USER_URL)
-      const data = response.data.results[0];
-      
-      
-      console.log(data.email)
-      console.log(data.login.username)
-      console.log(data.name.title)
-      console.log(data.name.first)
-      console.log(data.name.last)
-      console.log(data.gender)
-      console.log(data.picture.large)
-      console.log(data.location.country)
-      console.log(data.location.city)
-
-      // const userDataInfo:UserDataInterface = {
-      //   email: data.email,
-      //   userName: data.login.username,
-      //   titleName: data.name.title,
-      //   firstName: data.name.first,
-      //   lastName: data.name.last,
-      //   gender: data.gender,
-      //   picture: data.picture.large,
-      //   country: data.location.country,
-      //   city: data.location.city
-      // }
-      setUserData({email: data.email,
-        userName: data.login.username,
-        titleName: data.name.title,
-        firstName: data.name.first,
-        lastName: data.name.last,
-        gender: data.gender,
-        picture: data.picture.large,
-        country: data.location.country,
-        city: data.location.city});
-
-      // console.log({userDataInfo});
-      console.log(userData);
-      
-
-      // const data = response.data;
-      // setJoke(`${data.setup} - ${data.punchline}`)
+      const response = await axios.get(JOKE_URL)
+      console.log(response.data);
+      const data = response.data;
+      setJoke(`${data.setup} - ${data.punchline}`)
     }
     catch (error: any) {
       console.log(error.message);
@@ -118,7 +70,7 @@ function Layout({ children }: LayoutProps) {
   })
 
   return (
-    <UserContext.Provider value={{ userData, error, isLoading, getUser }}>
+    <JokeContext.Provider value={{ joke, error, isLoading, getJoke }}>
       <LayoutComponent>
         <Header>
           <Link to='/'>
@@ -133,12 +85,12 @@ function Layout({ children }: LayoutProps) {
         <Main>{children}</Main>
         <Footer>
           <ButtonContainer>
-            <Button name='<-' onClick={goBack} />
+            <Button onClick={goBack} name={""}>{'<-'}</Button>
           </ButtonContainer>
-          <LogoText>Team Artur Fedoseiev, Alex Shumko, Evgeniy Buler, Gleb Medvedovsky</LogoText>
+          <LogoText>Company name</LogoText>
         </Footer>
       </LayoutComponent>
-    </UserContext.Provider>
+    </JokeContext.Provider>
   )
 }
 

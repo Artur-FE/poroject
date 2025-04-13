@@ -45,7 +45,7 @@ export const Footer = styled.footer`
  align-items: center;
  gap: 30px;
  padding: 20px;
- background-color: #7d686b;
+ background-color: #8a1e30;
  color: white;
 `;
 
@@ -53,7 +53,7 @@ export const ButtonContainer = styled.div`
  width: 50px;
 `
 export const LogoText = styled.div`
-  font-size: 16px;
+  font-size: 28px;
   font-weight: bold;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 `

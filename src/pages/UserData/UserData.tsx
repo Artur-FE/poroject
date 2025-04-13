@@ -1,43 +1,29 @@
-import { useContext } from "react";
-import { ListValue, PhotoProfile, ProfileWrapper, Title, UserDataContainer, UserDataWrapper, UserFieldName } from "./styles";
-import { UserContext } from "../../components/Layout/Layout";
+import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Wrapper, Title, Info } from "./styles";
 
-function UserData() {
-  const { userData, isLoading } = useContext(UserContext);
-  const arrayValueUser = [
-    userData?.email, 
-    userData?.titleName, 
-    userData?.firstName,
-      userData?.lastName,
-      userData?.gender,
-      userData?.picture,
-      userData?.country,
-      userData?.city,
-];
+const UserData = () => {
+  const { user, isAuthenticated } = useUser();
+  const navigate = useNavigate();
 
-    // const valueUser = arrayValueUser.map((value)=>{
-    //         return <ListValue>{value}</ListValue>
-    // })
-    
-
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      navigate("/");
+    }
+  }, [isAuthenticated, user, navigate]);
 
   return (
-    <UserDataContainer>
-    <UserDataWrapper> 
-     {isLoading && <Title>Hello, {userData?.userName}!</Title>}
-     <PhotoProfile src={userData?.picture} /> 
-    <ProfileWrapper>
-     <ListValue><UserFieldName>E-mail:</UserFieldName> {userData?.email}</ListValue>
-     <ListValue><UserFieldName>First name: </UserFieldName>{userData?.titleName} {userData?.firstName}</ListValue>
-     <ListValue><UserFieldName>Last name: </UserFieldName> {userData?.lastName}</ListValue>
-     <ListValue><UserFieldName>Gender:</UserFieldName>{userData?.gender}</ListValue>
-     <ListValue><UserFieldName>Country:</UserFieldName>{userData?.country}</ListValue>
-     <ListValue><UserFieldName>City:</UserFieldName> {userData?.city} </ListValue>
-     </ProfileWrapper>
-
-      </UserDataWrapper>
-    </UserDataContainer>
+    <Wrapper>
+      <Title>
+        {user?.name?.first} {user?.name?.last}
+      </Title>
+      <Info>Email: {user?.email}</Info>
+      <Info>Phone: {user?.phone}</Info>
+      <Info>Country: {user?.location?.country}</Info>
+      <Info>Username: {user?.login?.username}</Info>
+    </Wrapper>
   );
-}
+};
 
 export default UserData;

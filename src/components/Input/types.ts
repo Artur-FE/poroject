@@ -10,4 +10,5 @@ export interface InputProps {
   id?: string,
   search?: boolean,
   error?: string
+  [key: string]: any;
 }
