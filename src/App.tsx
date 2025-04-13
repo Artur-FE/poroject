@@ -1,25 +1,24 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import GlobalStyles from "./styles/GlobalStyles"
-import Layout from './components/Layout/Layout'
-import LoginForm from './pages/LoginForm/LoginForm'
-import UserData from './pages/UserData/UserData'
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserProvider } from "./UserContext/UserContext";
+import GlobalStyles from "./styles/GlobalStyles";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import UserDataPage from "./pages/UserDataPage/UserData";
+import Layout from "./components/Layout/Layout";
 
 function App() {
-
   return (
-    //BrowserRouter - глобальная обёртка для всего приложения,
-    // которая позволяет использовать маршрутизацию
+    <UserProvider>
     <BrowserRouter>
       <GlobalStyles />
       <Layout>
         <Routes>
-        <Route path='/login' element={<LoginForm />}/>
-        <Route path='/user' element={<UserData />}/>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/user" element={<UserDataPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
-  )
+    </UserProvider>
+  );
 }
 
-export default App
+export default App;

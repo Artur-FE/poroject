@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 interface InputComponentStyledProps {
-  isSearch?: boolean
+  isSearch?: boolean;
 }
 
 export const InputContainer = styled.div`
@@ -17,8 +17,13 @@ export const InputComponent = styled.input<InputComponentStyledProps>`
   padding: 12px;
   outline: none;
   border: 1px solid black;
-  border-radius: ${({ isSearch }) => isSearch ? '16px' : '4px'};
+  border-radius: ${({ isSearch }) => (isSearch ? "16px" : "4px")};
   font-size: 18px;
+  transition: border 0.2s ease-in-out;
+  &:focus {
+    outline: none;
+    border-color: #4c6ef5;
+  }
 `;
 
 export const Label = styled.label`
@@ -26,7 +31,7 @@ export const Label = styled.label`
 `;
 
 export const ErrorMessage = styled.div`
- height: 20px;
- font-size: 18px;
- color: red;
-`
+  height: 20px;
+  font-size: 18px;
+  color: red;
+`;
