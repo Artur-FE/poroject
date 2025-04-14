@@ -15,7 +15,9 @@ function UserData() {
 
   return (
     <UserDataContainer>
-      {userData?.userName && (
+
+
+      {userData?.userName ? (
         <UserDataWrapper>
           <Title>Hello, {userData?.userName}!</Title>
           <PhotoProfile src={userData?.picture} />
@@ -43,7 +45,9 @@ function UserData() {
             </ListValue>
           </ProfileWrapper>
         </UserDataWrapper>
-      )}
+      ) : <UserDataWrapper>
+      <Title>User not found</Title>
+      </UserDataWrapper> }
     </UserDataContainer>
   );
 }

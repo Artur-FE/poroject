@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export interface LayoutProps {
   children: ReactNode
@@ -9,6 +9,7 @@ export interface NavLinkObj {
   linkName: string
 }
 export interface UserDataInterface{
+  [x: string]: any;
   email: string,
   userName: string,
   titleName: string,
@@ -25,4 +26,10 @@ export interface UserTextInterface {
   error: string | undefined,
   isLoading: boolean,
   getUser: () => void
+  arrayUserData: UserDataInterface[] | undefined
+  setArrayUserData: (() => void) | Dispatch<SetStateAction<UserDataInterface[]>>
+}
+
+export interface ArrayUserDataInterface {
+  [index: number]: UserDataInterface
 }
