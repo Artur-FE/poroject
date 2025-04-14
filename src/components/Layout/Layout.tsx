@@ -27,10 +27,14 @@ export const UserContext = createContext<UserTextInterface>({
   error: undefined,
   isLoading: false,
   getUser: () => {},
+  arrayUserData: undefined,
+  setArrayUserData: () => { }
 });
 
 function Layout({ children }: LayoutProps) {
-  const [userData, setUserData] = useState<UserDataInterface | undefined>({
+  const [userData, setUserData] = useState<UserDataInterface>(
+    {
+    //undefined
     email: "",
     userName: "",
     titleName: "",
@@ -41,8 +45,14 @@ function Layout({ children }: LayoutProps) {
     country: "",
     city: "",
   });
+
+  const [arrayUserData, setArrayUserData] = useState<UserDataInterface[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // useEffect(() => 
+  //   {setArrayUserData([...arrayUserData, userData]) }, [userData]);
+
+  // setArrayUserData((prevValue) => [...prevValue, response.data.message]);
 
   const USER_URL: string = "https://randomuser.me/api";
 
@@ -63,19 +73,20 @@ function Layout({ children }: LayoutProps) {
         picture: data.picture.large,
         country: data.location.country,
         city: data.location.city,
-      });
+      })
+      setArrayUserData((prevValue) => [...prevValue, userData]);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         setError(error.message);
       } else {
-        setError('Unknown error')
+        setError("Unknown error");
       }
-      
-      
     } finally {
       setIsLoading(false);
     }
   };
+
+  console.log(arrayUserData)
 
   const navLinks = navLinksData.map((navLink: NavLinkObj) => {
     return (
@@ -92,7 +103,7 @@ function Layout({ children }: LayoutProps) {
   });
 
   return (
-    <UserContext.Provider value={{ userData, error, isLoading, getUser }}>
+    <UserContext.Provider value={{ userData, error, isLoading, getUser, arrayUserData, setArrayUserData }}>
       <LayoutComponent>
         <Header>
           <Link to="/">

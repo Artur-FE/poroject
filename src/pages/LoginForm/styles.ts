@@ -10,6 +10,7 @@ gap: 40px;
 
 export const LoginFormWrapper = styled.form`
 display: flex;
+gap: 30px;
 flex-direction: column;
 align-items: center;
 justify-content: center;
