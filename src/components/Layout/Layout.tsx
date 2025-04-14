@@ -28,12 +28,11 @@ export const UserContext = createContext<UserTextInterface>({
   isLoading: false,
   getUser: () => {},
   arrayUserData: undefined,
-  setArrayUserData: () => { }
+  setArrayUserData: () => {},
 });
 
 function Layout({ children }: LayoutProps) {
-  const [userData, setUserData] = useState<UserDataInterface>(
-    {
+  const [userData, setUserData] = useState<UserDataInterface>({
     //undefined
     email: "",
     userName: "",
@@ -49,7 +48,7 @@ function Layout({ children }: LayoutProps) {
   const [arrayUserData, setArrayUserData] = useState<UserDataInterface[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // useEffect(() => 
+  // useEffect(() =>
   //   {setArrayUserData([...arrayUserData, userData]) }, [userData]);
 
   // setArrayUserData((prevValue) => [...prevValue, response.data.message]);
@@ -63,7 +62,7 @@ function Layout({ children }: LayoutProps) {
       const response = await axios.get(USER_URL);
       const data = response.data.results[0];
 
-      setUserData({
+      const newUser: UserDataInterface = {
         email: data.email,
         userName: data.login.username,
         titleName: data.name.title,
@@ -73,8 +72,11 @@ function Layout({ children }: LayoutProps) {
         picture: data.picture.large,
         country: data.location.country,
         city: data.location.city,
-      })
-      setArrayUserData((prevValue) => [...prevValue, userData]);
+      };
+
+      setUserData(newUser);
+
+      setArrayUserData((prevValue) => [...prevValue, newUser]);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         setError(error.message);
@@ -85,8 +87,6 @@ function Layout({ children }: LayoutProps) {
       setIsLoading(false);
     }
   };
-
-  console.log(arrayUserData)
 
   const navLinks = navLinksData.map((navLink: NavLinkObj) => {
     return (
@@ -103,7 +103,16 @@ function Layout({ children }: LayoutProps) {
   });
 
   return (
-    <UserContext.Provider value={{ userData, error, isLoading, getUser, arrayUserData, setArrayUserData }}>
+    <UserContext.Provider
+      value={{
+        userData,
+        error,
+        isLoading,
+        getUser,
+        arrayUserData,
+        setArrayUserData,
+      }}
+    >
       <LayoutComponent>
         <Header>
           <Link to="/">
