@@ -32,7 +32,7 @@ const LoginForm = () => {
       setIsAuthenticated(true);
       navigate("/user-data");
     } catch (err: any) {
-      setError(err.message || "Произошла ошибка");
+      setError(err.message || "ошибка");
     } finally {
       setLoading(false);
     }
