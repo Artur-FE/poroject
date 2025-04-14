@@ -1,7 +1,7 @@
-import { v4 } from "uuid"
-import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
-import { createContext, useState } from "react"
+import { v4 } from "uuid";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { createContext, useState } from "react";
 
 import {
   LayoutComponent,
@@ -12,68 +12,101 @@ import {
   Footer,
   StyledNavLink,
   LogoImage,
-  ButtonContainer
-} from "./styles"
-import { JokeTextInterface, LayoutProps, NavLinkObj } from "./types"
-import { navLinksData } from "./data"
-import Logo from '../../assets/avatar.jpg'
-import Button from "../Button/Button"
+} from "./styles";
+import {
+  LayoutProps,
+  NavLinkObj,
+  UserDataInterface,
+  UserTextInterface,
+} from "./types";
+import { navLinksData } from "./data";
+import Logo from "../../../src/assets/avatar.jpg";
 
-
-export const JokeContext = createContext<JokeTextInterface>({
-  joke: undefined,
+export const UserContext = createContext<UserTextInterface>({
+  userData: undefined,
   error: undefined,
   isLoading: false,
-  getJoke: () => { }
-})
+  getUser: () => {},
+  arrayUserData: undefined,
+  setArrayUserData: () => { }
+});
 
 function Layout({ children }: LayoutProps) {
-  const [joke, setJoke] = useState<string | undefined>(undefined);
+  const [userData, setUserData] = useState<UserDataInterface>(
+    {
+    //undefined
+    email: "",
+    userName: "",
+    titleName: "",
+    firstName: "",
+    lastName: "",
+    gender: "",
+    picture: "",
+    country: "",
+    city: "",
+  });
+
+  const [arrayUserData, setArrayUserData] = useState<UserDataInterface[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // useEffect(() => 
+  //   {setArrayUserData([...arrayUserData, userData]) }, [userData]);
 
-  const JOKE_URL: string = 'https://official-joke-api.appspot.com/random_joke';
+  // setArrayUserData((prevValue) => [...prevValue, response.data.message]);
 
-  const getJoke = async () => {
-    setError(undefined)
+  const USER_URL: string = "https://randomuser.me/api";
+
+  const getUser = async () => {
+    setError(undefined);
     try {
       setIsLoading(true);
-      const response = await axios.get(JOKE_URL)
-      console.log(response.data);
-      const data = response.data;
-      setJoke(`${data.setup} - ${data.punchline}`)
-    }
-    catch (error: any) {
-      console.log(error.message);
-      setError(error.message)
-    }
-    finally {
-      console.log('Результат получен');
+      const response = await axios.get(USER_URL);
+      const data = response.data.results[0];
+
+      setUserData({
+        email: data.email,
+        userName: data.login.username,
+        titleName: data.name.title,
+        firstName: data.name.first,
+        lastName: data.name.last,
+        gender: data.gender,
+        picture: data.picture.large,
+        country: data.location.country,
+        city: data.location.city,
+      })
+      setArrayUserData((prevValue) => [...prevValue, userData]);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.message);
+      } else {
+        setError("Unknown error");
+      }
+    } finally {
       setIsLoading(false);
     }
-  }
+  };
 
-  const navigate = useNavigate();
-
-  const goBack = () => {
-    //при вызове функции navigate, если добавить в качестве атрибута -1,
-    //тогда при выполнении функции нас всегда будет возвращать на предыдущую открытую страницу
-    navigate(-1)
-  }
+  console.log(arrayUserData)
 
   const navLinks = navLinksData.map((navLink: NavLinkObj) => {
     return (
-      <StyledNavLink key={v4()} to={navLink.to} style={
-        ({ isActive }) => ({ textDecoration: isActive ? 'underline' : 'none' })
-      }>{navLink.linkName}</StyledNavLink>
-    )
-  })
+      <StyledNavLink
+        key={v4()}
+        to={navLink.to}
+        style={({ isActive }) => ({
+          textDecoration: isActive ? "underline" : "none",
+        })}
+      >
+        {navLink.linkName}
+      </StyledNavLink>
+    );
+  });
 
   return (
-    <JokeContext.Provider value={{ joke, error, isLoading, getJoke }}>
+    <UserContext.Provider value={{ userData, error, isLoading, getUser, arrayUserData, setArrayUserData }}>
       <LayoutComponent>
         <Header>
-          <Link to='/'>
+          <Link to="/">
             <LogoImage src={Logo} />
           </Link>
           <Nav>
@@ -84,14 +117,13 @@ function Layout({ children }: LayoutProps) {
         </Header>
         <Main>{children}</Main>
         <Footer>
-          <ButtonContainer>
-            <Button name='<-' onClick={goBack} />
-          </ButtonContainer>
-          <LogoText>Company name</LogoText>
+          <LogoText>
+            Team Artur Fedoseiev, Alex Shumko, Evgeniy Buler, Gleb Medvedovsky
+          </LogoText>
         </Footer>
       </LayoutComponent>
-    </JokeContext.Provider>
-  )
+    </UserContext.Provider>
+  );
 }
 
-export default Layout
+export default Layout;
