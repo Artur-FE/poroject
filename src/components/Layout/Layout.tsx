@@ -64,8 +64,14 @@ function Layout({ children }: LayoutProps) {
         country: data.location.country,
         city: data.location.city,
       });
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.message);
+      } else {
+        setError('Unknown error')
+      }
+      
+      
     } finally {
       setIsLoading(false);
     }
